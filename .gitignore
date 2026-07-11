@@ -1,0 +1,12 @@
+.idea
+.agents
+.venv
+.vscode
+
+
+# CIFAR-10
+CIFAR-10/data/*
+CIFAR-10/weights/*
+
+
+
