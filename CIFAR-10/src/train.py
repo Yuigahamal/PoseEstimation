@@ -44,13 +44,13 @@ def train():
 
         if acc > best_acc:
             best_acc = acc
-            if os.path.exists(config.WEIGHT_DIR) :
+            if not os.path.exists(config.WEIGHT_DIR) :
                 os.mkdir(config.WEIGHT_DIR)
             torch.save(model.state_dict(), config.WEIGHT_DIR / "best_acc.pth")
 
         if train_loss < best_train_loss:
             best_train_loss = train_loss
-            if os.path.exists(config.WEIGHT_DIR) :
+            if not os.path.exists(config.WEIGHT_DIR) :
                 os.mkdir(config.WEIGHT_DIR)
             torch.save(model.state_dict(), config.WEIGHT_DIR / "best_train_loss.pth")
     
