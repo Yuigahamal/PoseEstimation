@@ -2,11 +2,11 @@ from pathlib import Path
 
 ROOT_DIR = Path(__file__).parent.parent
 
-DATA_DIR = ROOT_DIR / "data"  
+DATA_DIR = ROOT_DIR / "data"   # 数据集路径
 
-WEIGHT_DIR = ROOT_DIR / "weight"
+WEIGHT_DIR = ROOT_DIR / "weight"  # 模型权重路径
 
-LOGS_DIR  = ROOT_DIR / "logs"
+LOGS_DIR  = ROOT_DIR / "logs" # 日志路径
 
 DATA_FRACTION = 1.0  # 训练数据量，1.0 表示全量
 BATCH_SIZE = 16 # 批次大小

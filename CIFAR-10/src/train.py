@@ -38,6 +38,7 @@ def train():
     for epoch in range(config.EPOCHS):
         train_loss =train_one_epoch(model,criterion,optimizer,train_loader,device,epoch)
         print(f"Train Epoch {epoch+1}/{config.EPOCHS} 训练损失: {train_loss:.4f}")
+        
         acc =  evaluate(model,val_loader,device)
         print(f"Evaluate Epoch {epoch+1}/{config.EPOCHS} 验证准确率: {acc:.4f}")
 
