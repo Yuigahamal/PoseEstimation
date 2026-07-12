@@ -25,6 +25,7 @@ def train():
     # 2.加载模型
     model = ResNet(Bottleneck, [3, 4, 23, 3], include_top=True)
     model.to(device)
+    model.load_state_dict(torch.load(config.WEIGHT_DIR / "best_acc.pth"))
 
     # 3.定义损失函数
     criterion = nn.CrossEntropyLoss()
