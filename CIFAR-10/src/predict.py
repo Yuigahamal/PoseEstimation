@@ -1,4 +1,5 @@
 import argparse
+from numbers import Number
 from pathlib import Path
 
 import torch
@@ -48,21 +49,21 @@ def load_model(weights_path, device):
     return model
 
 
-def predict(model, image_path, device):
+def predict(model, image_path, device)-> tuple[int, float]:
     image_path = Path(image_path)
     if not image_path.exists():
         raise FileNotFoundError(f"找不到图片文件: {image_path}")
 
     transform = get_transform(is_train=False)
     image = Image.open(image_path).convert("RGB")
-    image_tensor = transform(image).unsqueeze(0).to(device)
+    image_tensor = transform(image).unsqueeze(0).to(device)  # type ignore
 
     with torch.no_grad():
         outputs = model(image_tensor)
         probabilities = torch.softmax(outputs, dim=1)[0]
         confidence, class_index = torch.max(probabilities, dim=0)
 
-    return class_index.item(), confidence.item()
+    return int(class_index.item()), confidence.item()
 
 
 def parse_args():
@@ -71,7 +72,7 @@ def parse_args():
     parser.add_argument(
         "--weights",
         type=Path,
-        default=config.MODEL_DIR / "resnet101_cifar10.pth",
+        default=config.WEIGHT_DIR / "best_acc.pth",
         help="训练好的模型权重路径",
     )
     return parser.parse_args()

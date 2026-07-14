@@ -2,9 +2,11 @@ from torchvision import transforms,datasets
 import config
 from torch.utils.data import DataLoader, Subset
 
-def get_transform(is_train=True):
+def get_transform(is_train=True) -> transforms.Compose:
     if is_train:
         return transforms.Compose([
+            transforms.RandomCrop(32, padding=4),
+            transforms.RandomHorizontalFlip(),
             transforms.ToTensor(),
             transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),
         ])
@@ -14,7 +16,7 @@ def get_transform(is_train=True):
             transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),
         ])
 
-def get_dataloder(is_train=True, fraction=1.0):
+def get_dataloder(is_train=True, fraction=1.0) -> DataLoader:
     download_root  =  config.DATA_DIR
     transform = get_transform(is_train)
     dataset = datasets.CIFAR10(

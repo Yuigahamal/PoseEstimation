@@ -1,6 +1,7 @@
+from pickle import TRUE
 import torch
 from tqdm import tqdm
-from model import resnet50
+from model import resnet101, resnet50
 import dataset
 import config
 import os
@@ -10,15 +11,16 @@ def run_evaluate():
 
 
     # 2.获取设备
-
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     device_name = torch.cuda.get_device_name(0) if device.type == "cuda" else "CPU"
     print(f"训练设备为: {device_name}")
 
     # 3.加载模型
-    model = resnet50().to(device)
+    model = resnet50(config.NUM_CLASSES,top_include=True).to(device)
     if os.path.exists(config.WEIGHT_DIR / "best_acc.pth"):
         model.load_state_dict(torch.load(config.WEIGHT_DIR / "best_acc.pth"))
+    else:
+        print("模型未训练")
 
     # 4.评估模型
     acc = evaluate(model, val_dataloder, device)

@@ -7,6 +7,8 @@
 # CIFAR-10
 CIFAR-10/data/*
 CIFAR-10/weights/*
+CIFAR-10/logs/*
+CIFAR-10/weight/*
 
 
 

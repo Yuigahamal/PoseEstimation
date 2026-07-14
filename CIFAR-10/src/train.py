@@ -1,11 +1,14 @@
+import pathlib
 from math import inf
 import torch
 import torch.nn as nn
+
 import config
 from dataset import get_dataloder
 from tqdm import tqdm
-from model import ResNet, Bottleneck
+from model import resnet50
 from evaluate import evaluate
+import pathlib
 import os
 
 def train():
@@ -23,9 +26,10 @@ def train():
     print(f"训练设备为: {device_name}")
 
     # 2.加载模型
-    model = ResNet(Bottleneck, [3, 4, 23, 3], include_top=True)
+    model = resnet50(num_classes=config.NUM_CLASSES,top_include=True)
     model.to(device)
-    model.load_state_dict(torch.load(config.WEIGHT_DIR / "best_acc.pth"))
+    if os.path.exists(config.WEIGHT_DIR / "best_acc.pth"):
+        model.load_state_dict(torch.load(config.WEIGHT_DIR / "best_acc.pth"))
 
     # 3.定义损失函数
     criterion = nn.CrossEntropyLoss()
@@ -33,7 +37,14 @@ def train():
     # 4.定义优化器
     optimizer = torch.optim.Adam(model.parameters(), lr=config.LR)
 
-    # 5.边训练模型边检验
+    # 5.打开日志文件
+    if not os.path.exists(config.LOGS_DIR):
+        os.mkdir(config.LOGS_DIR)
+    if not os.path.exists(config.LOGS_DIR/ "train.log"): # 或者 pathlib.Path.exist
+        pathlib.Path.touch(config.LOGS_DIR / "train.log")
+    f = open(config.LOGS_DIR / "train.log", "w")
+
+    # 6.边训练模型边检验
     best_train_loss = inf
     best_acc = 0
     for epoch in range(config.EPOCHS):
@@ -42,6 +53,8 @@ def train():
         
         acc =  evaluate(model,val_loader,device)
         print(f"Evaluate Epoch {epoch+1}/{config.EPOCHS} 验证准确率: {acc:.4f}")
+
+        write_log(f,epoch, train_loss, acc) # 写日志
 
         if acc > best_acc:
             best_acc = acc
@@ -54,14 +67,9 @@ def train():
             if not os.path.exists(config.WEIGHT_DIR) :
                 os.mkdir(config.WEIGHT_DIR)
             torch.save(model.state_dict(), config.WEIGHT_DIR / "best_train_loss.pth")
-    
 
-        
-
-    
-
-    
-
+    # 7.关闭日志文件
+    f.close()
 
 # 训练一个 epoch
 def train_one_epoch(model,criterion,optimizer,train_loader,device,epoch):
@@ -90,6 +98,11 @@ def train_one_epoch(model,criterion,optimizer,train_loader,device,epoch):
         pbar.set_postfix(loss=total_loss / (batch_idx + 1))
 
     return total_loss / len(train_loader)
+
+# 写日志
+def write_log(f,epoch, train_loss, acc):
+    f.write(f"Epoch {epoch+1}/{config.EPOCHS} 训练损失: {train_loss:.4f} 验证准确率: {acc:.4f}\n")
+
 
 if __name__ == "__main__":
     train()

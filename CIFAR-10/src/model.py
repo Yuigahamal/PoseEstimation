@@ -162,31 +162,31 @@ class ResNet(nn.Module):
         return x
 
 
-def resnet101():
-    return ResNet(Bottleneck, [3, 4, 23, 3])
+def resnet101(num_classes=10,top_include = False):
+    return ResNet(Bottleneck, [3, 4, 23, 3],num_classes,top_include)
 
-def resnet152():
-    return ResNet(Bottleneck, [3, 8, 36, 3])
+def resnet152(num_classes=10,top_include = False):
+    return ResNet(Bottleneck, [3, 8, 36, 3],num_classes,top_include)
 
-def resnet50():
-    return ResNet(Bottleneck, [3, 4, 6, 3])
+def resnet50(num_classes=10,top_include = False):
+    return ResNet(Bottleneck, [3, 4, 6, 3],num_classes, top_include)
 
-def resnet34():
-    return ResNet(BasicModule, [3, 4, 6, 3])
+def resnet34(num_classes=10,top_include = False):
+    return ResNet(BasicModule, [3, 4, 6, 3],num_classes,top_include)
 
-def resnet18():
-    return ResNet(BasicModule, [2, 2, 2, 2])
+def resnet18(num_classes=10,top_include = False):
+    return ResNet(BasicModule, [2, 2, 2, 2],num_classes,top_include)
 
 
 
 if __name__ == "__main__":
-    resnet18 = ResNet(BasicModule, [2, 2, 2, 2])
-    resnet34 = ResNet(BasicModule, [3, 4, 6, 3])
-    resnet50 =  ResNet(Bottleneck, [3, 4, 6, 3])
-    resnet101 = ResNet(Bottleneck, [3, 4, 23, 3])
-    resnet152 = ResNet(Bottleneck, [3, 8, 36, 3])
-
-    x= torch.randn(1,3,112,112)
+    resnet18 = resnet18(num_classes=10,top_include=True)
+    resnet34 = resnet34(num_classes=10,top_include=True)
+    resnet50 = resnet50(num_classes=10,top_include=True)
+    resnet101 = resnet101(num_classes=10,top_include=True)
+    resnet152 = resnet152(num_classes=10,top_include=True)
+    
+    x= torch.randn(1,3,128,128)
     print(resnet18(x).shape)
     print(resnet34(x).shape)
     print(resnet50(x).shape)
