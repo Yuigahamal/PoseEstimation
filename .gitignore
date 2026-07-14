@@ -4,11 +4,15 @@
 .vscode
 
 
-# CIFAR-10
+# CIFAR-10 - 忽略数据文件，但保留目录结构
 CIFAR-10/data/*
 CIFAR-10/weights/*
 CIFAR-10/logs/*
-CIFAR-10/weight/*
+
+# 但保留 .gitkeep 文件（用于保留目录结构）
+!CIFAR-10/data/.gitkeep
+!CIFAR-10/weights/.gitkeep
+!CIFAR-10/logs/.gitkeep
 
 
 
