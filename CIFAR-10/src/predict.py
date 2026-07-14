@@ -1,5 +1,4 @@
 import argparse
-from numbers import Number
 from pathlib import Path
 
 import torch
@@ -7,7 +6,8 @@ from PIL import Image
 
 import config
 from dataset import get_transform
-from model import Bottleneck, ResNet
+from model import resnet50
+
 
 
 CIFAR10_CLASSES = (
@@ -25,7 +25,7 @@ CIFAR10_CLASSES = (
 
 
 def build_model():
-    return ResNet(Bottleneck, [3, 4, 23, 3], include_top=True)
+    return resnet50(num_classes=config.NUM_CLASSES,top_include=True)
 
 
 def load_model(weights_path, device):

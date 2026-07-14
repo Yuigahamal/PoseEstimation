@@ -103,9 +103,11 @@ class ResNet(nn.Module):
         self.include_top = include_top
         self.in_channel = 64
 
-        self.conv1 = nn.Conv2d(3,self.in_channel,kernel_size=7,stride =2,padding =3,bias =False)
+        # self.conv1 = nn.Conv2d(3,self.in_channel,kernel_size=7,stride =2,padding =3,bias =False)
+        self.conv1 = nn.Conv2d(3, self.in_channel, kernel_size=3, stride=1, padding=1, bias=False) # 适配CIFAR-10的32尺寸
         self.bn1 = nn.BatchNorm2d(self.in_channel)
-        self.maxpool = nn.MaxPool2d(kernel_size=3, stride=2, padding=1)
+        # self.maxpool = nn.MaxPool2d(kernel_size=3, stride=2, padding=1)
+        self.maxpool = nn.Identity()  #不做任何操作，适配CIFAR-10的32尺寸
 
         self.layer1 = self.__make__layer(block, 64, num_blocks[0])
         self.layer2 = self.__make__layer(block, 128, num_blocks[1], stride=2)
@@ -180,13 +182,13 @@ def resnet18(num_classes=10,top_include = False):
 
 
 if __name__ == "__main__":
-    resnet18 = resnet18(num_classes=10,top_include=True)
-    resnet34 = resnet34(num_classes=10,top_include=True)
-    resnet50 = resnet50(num_classes=10,top_include=True)
-    resnet101 = resnet101(num_classes=10,top_include=True)
-    resnet152 = resnet152(num_classes=10,top_include=True)
+    resnet18 = resnet18(num_classes=10)
+    resnet34 = resnet34(num_classes=10)
+    resnet50 = resnet50(num_classes=10)
+    resnet101 = resnet101(num_classes=10)
+    resnet152 = resnet152(num_classes=10)
     
-    x= torch.randn(1,3,128,128)
+    x= torch.randn(1,3,32,32)
     print(resnet18(x).shape)
     print(resnet34(x).shape)
     print(resnet50(x).shape)

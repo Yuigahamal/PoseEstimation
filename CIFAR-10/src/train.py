@@ -42,7 +42,7 @@ def train():
         os.mkdir(config.LOGS_DIR)
     if not os.path.exists(config.LOGS_DIR/ "train.log"): # 或者 pathlib.Path.exist
         pathlib.Path.touch(config.LOGS_DIR / "train.log")
-    f = open(config.LOGS_DIR / "train.log", "w")
+    f = open(config.LOGS_DIR / "train.log", "a")
 
     # 6.边训练模型边检验
     best_train_loss = inf
