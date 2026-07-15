@@ -58,7 +58,7 @@ def predict(model, image_path, device)-> tuple[int, float]:
 
 
 def parse_args():
-    parser = argparse.ArgumentParser(description="使用 ResNet101 预测单张 CIFAR-10 图片类别")
+    parser = argparse.ArgumentParser(description="使用 ResNet50 预测单张 CIFAR-10 图片类别")
     parser.add_argument("--image",
                         type=Path,
                         default=config.DATA_DIR / "test.jpg",
