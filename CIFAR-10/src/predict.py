@@ -34,17 +34,8 @@ def load_model(weights_path, device):
         raise FileNotFoundError(f"找不到权重文件: {weights_path}")
 
     model = build_model().to(device)
-    checkpoint = torch.load(weights_path, map_location=device)
-
-    if isinstance(checkpoint, dict):
-        state_dict = checkpoint.get("model_state_dict") or checkpoint.get("state_dict") or checkpoint
-    else:
-        state_dict = checkpoint
-
-    if state_dict and next(iter(state_dict)).startswith("module."):
-        state_dict = {key.removeprefix("module."): value for key, value in state_dict.items()}
-
-    model.load_state_dict(state_dict)
+    if Path.exists(weights_path):
+        model.load_state_dict(torch.load(weights_path, map_location=device))
     model.eval()
     return model
 
@@ -68,7 +59,10 @@ def predict(model, image_path, device)-> tuple[int, float]:
 
 def parse_args():
     parser = argparse.ArgumentParser(description="使用 ResNet101 预测单张 CIFAR-10 图片类别")
-    parser.add_argument("image", type=Path, help="待预测图片路径")
+    parser.add_argument("--image",
+                        type=Path,
+                        default=config.DATA_DIR / "test.jpg",
+                        help="待预测图片路径")
     parser.add_argument(
         "--weights",
         type=Path,

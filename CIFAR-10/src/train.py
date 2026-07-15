@@ -36,6 +36,12 @@ def train():
 
     # 4.定义优化器
     optimizer = torch.optim.Adam(model.parameters(), lr=config.LR)
+    # 普通余弦退火（一个周期，从初始值逐渐降到 0）
+    scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(
+        optimizer,
+        T_max=config.EPOCHS,  # 总 epoch 数
+        eta_min=0  # 最小学习率，通常设为 0
+    )
 
     # 5.打开日志文件
     if not os.path.exists(config.LOGS_DIR):
