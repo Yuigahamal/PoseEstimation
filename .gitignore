@@ -2,6 +2,10 @@
 .agents
 .venv
 .vscode
+__pycache__
+.claude
+
+
 
 
 
@@ -11,7 +15,16 @@ CIFAR-10/data/*
 CIFAR-10/weight/*
 CIFAR-10/logs/*
 
+VIT/example/data/*
+VIT/example/weight/*
+VIT/example/logs/*
+
+VitPose/data/*
+VitPose/work_dirs/*
+
+data/*
 
 
 # 保留全局.gitkeep 文件（用于保留目录结构）
 !.gitkeep
+

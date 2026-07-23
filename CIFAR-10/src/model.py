@@ -1,8 +1,6 @@
 
 import torch
 import torch.nn as nn
-
-
 class BasicModule(nn.Module):
     
 
@@ -41,7 +39,6 @@ class BasicModule(nn.Module):
         out += identity
         out = self.relu(out)
         return out
-
 
 class Bottleneck(nn.Module):
 
@@ -87,8 +84,6 @@ class Bottleneck(nn.Module):
         out += identity
         out = self.relu(out)
         return out
-        
-
 
 class ResNet(nn.Module):
     """
@@ -182,9 +177,9 @@ def resnet18(num_classes=10,top_include = False):
 
 
 if __name__ == "__main__":
-    resnet18 = resnet18(num_classes=10)
-    resnet34 = resnet34(num_classes=10)
-    resnet50 = resnet50(num_classes=10)
+    resnet18 = resnet18(num_classes=10,top_include = True)
+    resnet34 = resnet34(num_classes=10,top_include = True)
+    resnet50 = resnet50(num_classes=10,top_include = True)
     resnet101 = resnet101(num_classes=10)
     resnet152 = resnet152(num_classes=10)
     

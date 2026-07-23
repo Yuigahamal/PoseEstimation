@@ -1,4 +1,3 @@
-from pickle import TRUE
 import torch
 from tqdm import tqdm
 from model import resnet101, resnet50
@@ -37,13 +36,15 @@ def evaluate(model, val_loader, device):
             images = images.to(device) # (B,C,W,H)
             labels = labels.to(device) # (B,1)
 
-            outputs = model(images) # (B,10)
+            outputs = model(images) # (B,10)                            
             predictions = outputs.argmax(dim=1)
 
             total += labels.size(0)
             correct += (predictions == labels).sum().item()
             pbar.set_postfix(acc=correct / total)
 
+
+        
     return correct / total
 
 if __name__ == '__main__':
